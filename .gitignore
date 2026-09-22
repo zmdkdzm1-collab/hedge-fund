@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Node
+node_modules/
+dist/
+build/
+
+# 환경변수 / 시크릿
+.env
+.env.*
+*.key
+
+# 데이터
+data/
+*.csv
+*.parquet
+*.db
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
