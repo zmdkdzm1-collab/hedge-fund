@@ -49,6 +49,25 @@ export function StrategyDetail() {
       <p className="page-desc">{s.oneLiner}</p>
       {s.note && <p className="note warn">{s.note}</p>}
 
+      <div className="summary-box">
+        <div className="sb-row">
+          <b>수익 원천</b>
+          <span>{s.returnSource}</span>
+        </div>
+        <div className="sb-row">
+          <b>주요 위험</b>
+          <span>{s.keyRisks.join(" · ")}</span>
+        </div>
+        <div className="sb-row">
+          <b>대표 운용사</b>
+          <span>
+            {s.managers.length > 0
+              ? s.managers.slice(0, 4).map((l) => managerById(l.managerId)?.nameEn ?? "").filter(Boolean).join(" · ")
+              : "우선 조사 대상 중 없음"}
+          </span>
+        </div>
+      </div>
+
       <div className="section">
         <h2 className="section-title">A. 30초 설명</h2>
         {s.intro.map((t, i) => (
@@ -75,21 +94,25 @@ export function StrategyDetail() {
       </div>
 
       <div className="section">
-        <h2 className="section-title">C. 왜 수익이 발생할 수 있는가?</h2>
-        <ul className="tight">
-          {s.whyItWorks.map((t, i) => (
-            <li key={i}>{t}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="section">
-        <h2 className="section-title">D. 언제 어려워지는가?</h2>
-        <ul className="tight">
-          {s.whenItFails.map((t, i) => (
-            <li key={i}>{t}</li>
-          ))}
-        </ul>
+        <h2 className="section-title">C · D. 왜 벌리는가, 언제 어려운가</h2>
+        <div className="grid cols-2">
+          <div className="card">
+            <b style={{ fontSize: 13, color: "var(--ok)" }}>왜 수익이 발생할 수 있는가</b>
+            <ul className="tight">
+              {s.whyItWorks.map((t, i) => (
+                <li key={i}>{t}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="card">
+            <b style={{ fontSize: 13, color: "var(--danger)" }}>언제 어려워지는가</b>
+            <ul className="tight">
+              {s.whenItFails.map((t, i) => (
+                <li key={i}>{t}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
 
       <div className="section">

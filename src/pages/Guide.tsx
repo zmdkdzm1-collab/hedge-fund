@@ -78,57 +78,59 @@ export function Guide() {
               ))}
             </div>
 
-            <div className="grid cols-2" style={{ gap: 14 }}>
-              <div>
-                <GField label="1. 참고하는 글로벌 운용사·프로세스">
-                  <div className="tag-row" style={{ marginBottom: 4 }}>
-                    {g.references.managerIds.map((mid) => {
-                      const m = managerById(mid);
-                      return m ? (
-                        <Link key={mid} to={`/managers/${mid}`} className="badge">
-                          {m.nameEn}
-                        </Link>
-                      ) : null;
-                    })}
-                    {g.references.processIds.map((pid) => {
-                      const p = processes.find((x) => x.id === pid);
-                      return p ? (
-                        <Link key={pid} to={`/process/${pid}`} className="badge">
-                          {p.order}. {p.nameKo}
-                        </Link>
-                      ) : null;
-                    })}
-                  </div>
-                  {g.references.note}
-                </GField>
-                <GField label="2. 보험사에서 해결하려는 문제">{g.problem}</GField>
-                <GField label="3. 적용할 아이디어">{g.idea}</GField>
-                <GField label="4. 실제 필요한 데이터">
-                  <ul className="tight" style={{ margin: 0 }}>
-                    {g.dataNeeded.map((d) => (
-                      <li key={d}>{d}</li>
-                    ))}
-                  </ul>
-                </GField>
-                <GField label="5. 담당 역할 / 승인·검증 역할">
-                  실행: {g.owners.execute}
-                  <br />
-                  승인·검증: {g.owners.approve}
-                </GField>
-              </div>
-              <div>
-                <GField label="6. 기대효과">{g.expectedEffect}</GField>
-                <GField label="7. 한계와 수정할 부분">{g.limitations}</GField>
-                <GField label="8. 소규모 시범 적용 방법">{g.pilot}</GField>
-                <GField label="9. 효과 측정 지표">
-                  <ul className="tight" style={{ margin: 0 }}>
-                    {g.metrics.map((d) => (
-                      <li key={d}>{d}</li>
-                    ))}
-                  </ul>
-                </GField>
-              </div>
+            <GField label="해결하려는 문제">{g.problem}</GField>
+            <GField label="적용할 아이디어">{g.idea}</GField>
+            <div className="tag-row" style={{ marginTop: 4 }}>
+              {g.references.managerIds.map((mid) => {
+                const m = managerById(mid);
+                return m ? (
+                  <Link key={mid} to={`/managers/${mid}`} className="link-chip">
+                    {m.nameEn} <span className="arr">→</span>
+                  </Link>
+                ) : null;
+              })}
+              {g.references.processIds.map((pid) => {
+                const p = processes.find((x) => x.id === pid);
+                return p ? (
+                  <Link key={pid} to={`/process/${pid}`} className="link-chip">
+                    {p.order}. {p.nameKo} <span className="arr">→</span>
+                  </Link>
+                ) : null;
+              })}
             </div>
+
+            <details className="fold">
+              <summary>세부 설계 보기 (데이터 · 역할 · 기대효과 · 한계 · 시범 적용 · 측정 지표)</summary>
+              <div className="grid cols-2" style={{ gap: 14, marginTop: 8 }}>
+                <div>
+                  <GField label="참고 배경">{g.references.note}</GField>
+                  <GField label="실제 필요한 데이터">
+                    <ul className="tight" style={{ margin: 0 }}>
+                      {g.dataNeeded.map((d) => (
+                        <li key={d}>{d}</li>
+                      ))}
+                    </ul>
+                  </GField>
+                  <GField label="담당 역할 / 승인·검증 역할">
+                    실행: {g.owners.execute}
+                    <br />
+                    승인·검증: {g.owners.approve}
+                  </GField>
+                </div>
+                <div>
+                  <GField label="기대효과">{g.expectedEffect}</GField>
+                  <GField label="한계와 수정할 부분">{g.limitations}</GField>
+                  <GField label="소규모 시범 적용 방법">{g.pilot}</GField>
+                  <GField label="효과 측정 지표">
+                    <ul className="tight" style={{ margin: 0 }}>
+                      {g.metrics.map((d) => (
+                        <li key={d}>{d}</li>
+                      ))}
+                    </ul>
+                  </GField>
+                </div>
+              </div>
+            </details>
           </div>
         ))
       )}

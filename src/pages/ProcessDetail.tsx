@@ -25,6 +25,21 @@ export function ProcessDetail() {
       </h1>
       <p className="page-desc">{p.short}</p>
 
+      <div className="summary-box">
+        <div className="sb-row">
+          <b>결정하는 것</b>
+          <span>{p.panel.decides}</span>
+        </div>
+        <div className="sb-row">
+          <b>핵심 질문</b>
+          <span>“{p.panel.hanwhaQuestion}”</span>
+        </div>
+        <div className="sb-row">
+          <b>키워드</b>
+          <span>{p.keywords.join(" · ")}</span>
+        </div>
+      </div>
+
       <div className="section">
         <h2 className="section-title">1. 쉬운 정의</h2>
         <p>{d.definition}</p>

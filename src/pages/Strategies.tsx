@@ -2,7 +2,6 @@ import { Link, useSearchParams } from "react-router-dom";
 import { strategies, childStrategies } from "../data/strategies";
 import { operatingModels } from "../data/operatingModels";
 import { managerById } from "../data/managers";
-import { processes } from "../data/processes";
 import { KindBadge } from "../components/Badge";
 import type { Strategy } from "../types";
 
@@ -105,32 +104,22 @@ export function Strategies() {
 }
 
 function StrategyCard({ s, isChild = false }: { s: Strategy; isChild?: boolean }) {
+  const flagships = s.managers
+    .filter((l) => l.role === "flagship")
+    .map((l) => managerById(l.managerId)?.nameEn ?? "")
+    .filter(Boolean);
+  const names = flagships.length > 0 ? flagships : s.managers.map((l) => managerById(l.managerId)?.nameEn ?? "").filter(Boolean);
   return (
     <Link to={`/strategies/${s.id}`} className="card" style={{ display: "block" }}>
-      <div className="tag-row" style={{ marginBottom: 6 }}>
-        <KindBadge kind="strategy" />
-        {isChild && <span className="badge">하위 전략</span>}
+      <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+        {isChild && <span className="badge" style={{ fontSize: 10.5 }}>하위</span>}
+        <span style={{ fontWeight: 780, fontSize: 15.5 }}>{s.nameKo}</span>
+        <span style={{ color: "var(--ink-3)", fontWeight: 500, fontSize: 12.5 }}>{s.nameEn}</span>
       </div>
-      <div style={{ fontWeight: 750, fontSize: 15.5 }}>
-        {s.nameKo} <span style={{ color: "var(--ink-3)", fontWeight: 500, fontSize: 13 }}>{s.nameEn}</span>
-      </div>
-      <p style={{ fontSize: 13.5, color: "var(--ink-2)", margin: "4px 0 10px" }}>{s.oneLiner}</p>
-      <div className="grid cols-3" style={{ gap: 8, fontSize: 12.5 }}>
-        <div>
-          <div style={{ color: "var(--ink-3)", fontSize: 11.5 }}>수익 발생 원천</div>
-          {s.returnSource}
-        </div>
-        <div>
-          <div style={{ color: "var(--ink-3)", fontSize: 11.5 }}>주요 위험</div>
-          {s.keyRisks.join(" · ")}
-        </div>
-        <div>
-          <div style={{ color: "var(--ink-3)", fontSize: 11.5 }}>대표 운용사 / 관련 프로세스</div>
-          {s.managers.slice(0, 3).map((l) => managerById(l.managerId)?.nameEn ?? "").filter(Boolean).join(", ") || "대표 운용사 없음(조사 범위)"}
-          <div style={{ color: "var(--navy)" }}>
-            {s.relatedProcessIds.map((pid) => processes.find((p) => p.id === pid)?.nameKo ?? "").filter(Boolean).join(" · ")}
-          </div>
-        </div>
+      <p style={{ fontSize: 13, color: "var(--ink-2)", margin: "5px 0 8px", lineHeight: 1.55 }}>{s.oneLiner}</p>
+      <div style={{ fontSize: 12, color: "var(--ink-3)" }}>
+        {names.length > 0 ? names.slice(0, 3).join(" · ") : "대표 운용사 없음(조사 범위)"}
+        <span style={{ color: "var(--orange)", fontWeight: 700, marginLeft: 8 }}>자세히 →</span>
       </div>
     </Link>
   );
